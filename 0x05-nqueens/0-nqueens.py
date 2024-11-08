@@ -1,42 +1,44 @@
 #!/usr/bin/python3
-""" N Queens """
+""" N queens """
 import sys
 
-# Check for correct usage and input validation
-if len(sys.argv) != 2:
+
+if len(sys.argv) > 2 or len(sys.argv) < 2:
     print("Usage: nqueens N")
-    sys.exit(1)
+    exit(1)
 
-# Ensure that N is a positive integer
-try:
-    n = int(sys.argv[1])
-except ValueError:
+if not sys.argv[1].isdigit():
     print("N must be a number")
-    sys.exit(1)
+    exit(1)
 
-# Ensure N is at least 4
-if n < 4:
+if int(sys.argv[1]) < 4:
     print("N must be at least 4")
-    sys.exit(1)
+    exit(1)
 
-# Recursive function to find solutions
-def queens(n, row=0, columns=[], diag1=[], diag2=[]):
-    """Generate valid queen placements for the current row."""
-    if row == n:
-        # Each solution is represented by the list of positions
-        solution = [[i, columns[i]] for i in range(n)]
-        yield solution
+n = int(sys.argv[1])
+
+
+def queens(n, i=0, a=[], b=[], c=[]):
+    """ find possible positions """
+    if i < n:
+        for j in range(n):
+            if j not in a and i + j not in b and i - j not in c:
+                yield from queens(n, i + 1, a + [j], b + [i + j], c + [i - j])
     else:
-        for col in range(n):
-            if col not in columns and row + col not in diag1 and row - col not in diag2:
-                # Recursively place the next queen
-                yield from queens(n, row + 1, columns + [col], diag1 + [row + col], diag2 + [row - col])
+        yield a
 
-# Function to print all solutions
+
 def solve(n):
-    """Print all solutions for the n-queens problem."""
-    for solution in queens(n):
-        print(solution)
+    """ solve """
+    k = []
+    i = 0
+    for solution in queens(n, 0):
+        for s in solution:
+            k.append([i, s])
+            i += 1
+        print(k)
+        k = []
+        i = 0
 
-# Run the solver
+
 solve(n)
