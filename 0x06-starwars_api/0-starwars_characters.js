@@ -2,16 +2,26 @@
 
 const request = require('request');
 
-request('https://swapi-api.hbtn.io/api/films/' + process.argv[2], function (err, res, body) {
-  if (err) throw err;
-  const actors = JSON.parse(body).characters;
-  exactOrder(actors, 0);
+const movieId = process.argv[2];
+const apiUrl = `https://swapi-api.hbtn.io/api/films/${movieId}`;
+
+request(apiUrl, { timeout: 5000 }, (err, res, body) => {
+  if (err) {
+    console.error('Error fetching movie:', err.message);
+    return;
+  }
+  const characters = JSON.parse(body).characters;
+
+  const fetchCharacter = (url) => {
+    return new Promise((resolve, reject) => {
+      request(url, { timeout: 5000 }, (err, res, body) => {
+        if (err) reject(err);
+        else resolve(JSON.parse(body).name);
+      });
+    });
+  };
+
+  Promise.all(characters.map(fetchCharacter))
+    .then((names) => names.forEach((name) => console.log(name)))
+    .catch((error) => console.error('Error fetching character:', error.message));
 });
-const exactOrder = (actors, x) => {
-  if (x === actors.length) return;
-  request(actors[x], function (err, res, body) {
-    if (err) throw err;
-    console.log(JSON.parse(body).name);
-    exactOrder(actors, x + 1);
-  });
-};
