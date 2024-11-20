@@ -1,8 +1,10 @@
 # Holberton School Interview
+
 ![Holberton logo](https://www.alxafrica.com/wp-content/uploads/2022/01/header-logo.png)
 > Interview - Preparation
 
 ## Description:bulb:
+
 Interview Algorithm practice
 
 * Whiteboard
@@ -24,6 +26,6 @@ Interview Algorithm practice
 
 ---
 
-
 ## Author
+
 * **Gideon Kaiyian** (@Giddy-K)
