@@ -24,15 +24,16 @@ if N < 4:
 
 def solve_nqueens(N):
     """Solve the N Queens problem using backtracking."""
+
     def backtrack(row, columns, diagonals1, diagonals2, board):
         """Recursive helper to explore solutions."""
         if row == N:
-            # Add a valid solution
             solutions.append([pos[:] for pos in board])
             return
 
         for col in range(N):
-            if col not in columns and (row + col) not in diagonals1 and (row - col) not in diagonals2:
+            if col not in columns and (row + col) not in diagonals1 \
+                    and (row - col) not in diagonals2:
                 # Choose
                 board.append([row, col])
                 columns.add(col)
